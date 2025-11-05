@@ -20,10 +20,60 @@ Queuing are the most frequently encountered problems in everyday life. For examp
 ## Experiment:
 
 
-## Program
+## Program :
+
+```
+import math
+# Getting Inputs
+ArrivalTime = float(input("Enter the mean inter arrival time of objects from Feeder (in secs): "))
+ServiceTime = float(input("Enter the mean inter service time of Lathe Machine (in secs): "))
+RobotTime = float(input("Enter the Additional time taken for the Robot (in secs): "))
+NumberOfServers = int(input("Number of service centre : "))
+
+# Calculating Lambda and Mu
+Lambda = 1 / ArrivalTime
+Mu = 1 / (ServiceTime + RobotTime)
+
+print("Multiple Server with Infinite Capacity - (M/M/c):(∞/FIFO)")
+print("The mean arrival rate per second : %0.2f" % Lambda)
+print("The mean service rate per second : %0.2f" % Mu)
+
+# Utilization factor
+Rho = Lambda / (NumberOfServers * Mu)
+
+# Calculating P0 (Probability system is empty)
+sum_terms = 0
+for i in range(NumberOfServers):
+    sum_terms += (Lambda / Mu) ** i / math.factorial(i)
+
+last_term = ((Lambda / Mu) ** NumberOfServers) / (math.factorial(NumberOfServers) * (1 - Rho))
+TotalSum = sum_terms + last_term
+P0 = 1 / TotalSum
+
+# System performance measures (M/M/c)
+if Rho < 1:
+    Lq = ((P0 * ((Lambda / Mu) ** NumberOfServers) * Rho) /
+          (math.factorial(NumberOfServers) * ((1 - Rho) ** 2)))
+    Ls = Lq + (Lambda / Mu)
+    Ws = Ls / Lambda
+    Wq = Lq / Lambda
+
+    print("Average number of objects in the system : %0.2f" % Ls)
+    print("Average number of objects in the conveyor :  %0.2f" % Lq)
+    print("Average waiting time of an object in the system : %0.2f secs" % Ws)
+    print("Average waiting time of an object in the conveyor : %0.2f secs" % Wq)
+    print("Probability that the system is busy : %0.2f" % Rho)
+    print("Probability that the system is empty : %0.2f" % (1 - Rho))
+else:
+    print("Warning! Objects Over flow will happen in the conveyor")
+```
 
 
 ## Output :
 
+<img width="695" height="294" alt="image" src="https://github.com/user-attachments/assets/6f15a763-18c6-4107-988b-8fc37f03334b" />
+
+
 ## Result : 
 
+Thus the average number of materials in the system and conveyor, waiting time of each material in the system and conveyor is found successfully.
